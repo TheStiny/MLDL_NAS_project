@@ -79,9 +79,9 @@ class VisualWakeWordsClassification(VisionDataset):
             full_target = vww.loadAnns(ann_ids)
             categories = [ann['category_id'] for ann in full_target]
             if 1 in categories:
-              target = 1  # l'immagine contiene una persona
+              target = 1  # the image contains a person
             else:
-              target = 0  # l'immagine non contiene una persona
+              target = 0  # the image does not contain a person
         else:
             target = 0
 
