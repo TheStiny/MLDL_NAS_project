@@ -13,23 +13,23 @@ Original file is located at
 
 #!bash visualwakewords/scripts/download_mscoco.sh path-to-COCO-dataset 2017
 
-TRAIN_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_train2017.json"
-VAL_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_val2017.json"
-DIR="path-to-mscoco-dataset/annotations/"
-!python visualwakewords/scripts/create_coco_train_minival_split.py \
-  --train_annotations_file="${TRAIN_ANNOTATIONS_FILE}" \
-  --val_annotations_file="${VAL_ANNOTATIONS_FILE}" \
---output_dir="${DIR}"
+#TRAIN_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_train2017.json"
+#VAL_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_val2017.json"
+#DIR="path-to-mscoco-dataset/annotations/"
+#!python visualwakewords/scripts/create_coco_train_minival_split.py \
+#  --train_annotations_file="${TRAIN_ANNOTATIONS_FILE}" \
+#  --val_annotations_file="${VAL_ANNOTATIONS_FILE}" \
+#--output_dir="${DIR}"
 
-MAXITRAIN_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_maxitrain.json"
-MINIVAL_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_minival.json"
-VWW_OUTPUT_DIR="new-path-to-visualwakewords-dataset/annotations/"
-!python visualwakewords/scripts/create_visualwakewords_annotations.py \
-  --train_annotations_file="${MAXITRAIN_ANNOTATIONS_FILE}" \
-  --val_annotations_file="${MINIVAL_ANNOTATIONS_FILE}" \
-  --output_dir="${VWW_OUTPUT_DIR}" \
-  --threshold=0.005 \
-  --foreground_class='person'
+#MAXITRAIN_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_maxitrain.json"
+#MINIVAL_ANNOTATIONS_FILE="path-to-mscoco-dataset/annotations/instances_minival.json"
+#VWW_OUTPUT_DIR="new-path-to-visualwakewords-dataset/annotations/"
+#!python visualwakewords/scripts/create_visualwakewords_annotations.py \
+#  --train_annotations_file="${MAXITRAIN_ANNOTATIONS_FILE}" \
+#  --val_annotations_file="${MINIVAL_ANNOTATIONS_FILE}" \
+#  --output_dir="${VWW_OUTPUT_DIR}" \
+#  --threshold=0.005 \
+#  --foreground_class='person'
 
 import numpy as np
 import torch
