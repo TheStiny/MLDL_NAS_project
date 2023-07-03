@@ -7,7 +7,7 @@ from torch import Tensor
 import torch.nn.functional as F
 from torchvision import ops
 
-
+#Layer Normalization for ConvNeXt blocks
 class LayerNorm2d(nn.Module):
     def __init__(self, out_channels):
       super(LayerNorm2d, self).__init__()
@@ -19,7 +19,7 @@ class LayerNorm2d(nn.Module):
         x = x.permute(0, 3, 1, 2)
         return x
 
-
+#Conv2d with auto-padding
 class Conv2dAuto(nn.Module):
     def __init__(self, in_channels, out_channels, kernel_size, pointwise=False):
         super(Conv2dAuto, self).__init__()
@@ -105,7 +105,7 @@ class block(nn.Module):
     if mode=="i":
       #inverted bottleneck
       self.layers = nn.Sequential(
-        #expansion
+        #expansion block
         nn.Conv2d(in_channels, out_channels*exp_ratio, kernel_size=(1,1), stride=(1,1), bias=False),
         nn.BatchNorm2d(out_channels*exp_ratio, eps=0.001, momentum=0.01, affine=True, track_running_stats=True),
         nn.ReLU(inplace=True),
@@ -119,7 +119,7 @@ class block(nn.Module):
         nn.ReLU(inplace=True)
       )
     elif mode=="c":
-      #block convnext
+      #convNeXt block
       self.layers = nn.Sequential(
         #depthwise
         Conv2dAuto(in_channels, in_channels, kernel).getLayer(),
@@ -145,7 +145,7 @@ def skip_connection(out, identity):
         return out 
       
       
-
+#class to create small DNN with structure [2,2,6,2]
 class dnn_small(nn.Module):
   def __init__(self, structure, num_classes=2):
         super(dnn_small, self).__init__()
@@ -183,7 +183,7 @@ class dnn_small(nn.Module):
         param_13 = structure[11]
         self.layer15 = block(param_12[0],param_11[1],param_12[1],param_12[2],param_12[3]).layers
         self.layer16 = block(param_13[0],param_12[1],param_13[1],param_13[2],param_13[3]).layers
-        #convnext
+        #from convNeXt
         self.avgpool = nn.AdaptiveAvgPool2d(1)
         self.classifier = nn.Sequential(
             nn.BatchNorm2d(param_13[1]), nn.Flatten(1), nn.Linear(param_13[1], num_classes)
@@ -252,7 +252,7 @@ class dnn_small(nn.Module):
         out = self.classifier(out)
         return out
         
-        
+#class to create large DNN with structure [3,3,9,3]        
 class dnn_large(nn.Module):
   def __init__(self, structure, num_classes=2):
         super(dnn_large, self).__init__()
