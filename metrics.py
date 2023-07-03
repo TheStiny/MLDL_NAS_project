@@ -1,16 +1,14 @@
 # -*- coding: utf-8 -*-
 
 
-#naswot
-
 import torch
 import torch.nn as nn
-from drive.MyDrive.projectMLDL.blocksAndMetrics.blocksreconstruction import LayerNorm2d
+from blocksreconstruction import LayerNorm2d
 import numpy as np
 import fvcore
 from fvcore.nn import FlopCountAnalysis
 
-
+#naswot
 def compute_naswot_score(net: nn.Module, inputs: torch.Tensor, targets: torch.Tensor, device: torch.device):
     with torch.no_grad():
         codes = []
@@ -60,7 +58,6 @@ def get_layer_metric_array(net, metric, mode):
 
     return metric_array
 
-#synflow
 
 import torch
 from torch.nn.modules.batchnorm import _BatchNorm
@@ -104,7 +101,6 @@ def compute_synflow_per_weight(net, inputs, targets, device, mode='param', remap
 
     # Compute gradients with input of 1s
     net.zero_grad()
-    #QUI!!!!!!!!!!!!!!!
     net.double().to(device)
     input_dim = list(inputs[0, :].shape)
     inputs = torch.ones([1] + input_dim).double().to(device)
@@ -135,7 +131,6 @@ def compute_synflow_per_weight(net, inputs, targets, device, mode='param', remap
     grads_abs = get_layer_metric_array(net, synflow, mode)
 
     # Apply signs of all params
-    #QUI!!!!!!!!!!!!!!!!!!!
     for key, value in signs.items():
       signs[key] = value.to(device)
     nonlinearize(net, signs)
@@ -151,14 +146,12 @@ def compute_synflow_per_weight(net, inputs, targets, device, mode='param', remap
 
 
 #flops
-
 def count_flops(model, size=(1,3,192,192)):
     flops = FlopCountAnalysis(model, size)
     return flops.total()
     
 
 #params
-
 def count_params(model):
   model_parameters = filter(lambda p: p.requires_grad, model.parameters())
   params = sum([np.prod(p.size()) for p in model_parameters])
